@@ -1,4 +1,4 @@
-package com.dominikdev.tinker
+package com.dominikdev.tinker.security
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.security.KeyFactory
@@ -9,7 +9,7 @@ import java.security.spec.X509EncodedKeySpec
 import java.util.Base64
 
 @ConfigurationProperties(prefix = "rsa-config")
-class RsaConfig(var publicKey: String, var privateKey: String) {
+class RSAConfig(private val publicKey: String, private val privateKey: String) {
 
     fun getPublicKey(): RSAPublicKey? {
         return runCatching {

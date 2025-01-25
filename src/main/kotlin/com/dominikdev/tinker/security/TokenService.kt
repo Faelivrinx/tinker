@@ -1,4 +1,4 @@
-package com.dominikdev.tinker
+package com.dominikdev.tinker.security
 
 import org.springframework.security.oauth2.jwt.JwtClaimsSet
 import org.springframework.security.oauth2.jwt.JwtEncoder

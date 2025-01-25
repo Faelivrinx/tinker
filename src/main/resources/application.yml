@@ -1,7 +1,15 @@
-logging:
-  level:
-    org.springframework.security: trace
-
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password: password
+    driverClassName: driverClassName=org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
 rsa-config:
   public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAniddX/0qv8P6tx8UjQQiIFy2cBSu/EnmxHo+YJmK9XUlXbis6hhaIYE7dXmto1QzQaiM7uqFZYLw/u/SZLZMKoyRiEtlEVWwBbl1tKLj+aEoq6rDurbsmakUHA2o7oj/KXwuaN+3gVoeLfsCmuWBEyS/vw+36bzuc9xVgSDnytYOnXPALtIPfbI3bRml4lOoPHG89UYe7pk6jiHbGW550q4/GuAG/6IRqBxlG8N7eBPbOkMRzYu6CWoTVLQDjMNhCHuJWvhCNXnxNVJFm/pfz776hHueKzKagk3/704t05iQ0ZnjL97CHpZWSBhymwBk1JoRr0qH7qJ4e2vD2XL0aQIDAQAB

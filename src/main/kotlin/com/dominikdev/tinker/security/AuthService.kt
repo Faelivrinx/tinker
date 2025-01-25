@@ -1,14 +1,16 @@
-package com.dominikdev.tinker
+package com.dominikdev.tinker.security
 
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
     private val tokenService: TokenService,
-    private val userDetailsManager: UserDetailsManager
+    private val userDetailsManager: UserDetailsManager,
+    private val passwordEncoder: PasswordEncoder
 ) {
     private val log = org.slf4j.LoggerFactory.getLogger(AuthService::class.java)
 
@@ -20,9 +22,7 @@ class AuthService(
             throw RuntimeException("Invalid credentials") // Generic error for security
         }
 
-        // SECURITY RISK: Using plain text password comparison.
-        // In production, use a PasswordEncoder: passwordEncoder.matches(...)
-        if (userDetails.password != tokenRequest.password) {
+        if (!passwordEncoder.matches(tokenRequest.password, userDetails.password)) {
             log.error("Password mismatch for user: {}", tokenRequest.email)
             throw RuntimeException("Invalid credentials") // Generic error for security
         }

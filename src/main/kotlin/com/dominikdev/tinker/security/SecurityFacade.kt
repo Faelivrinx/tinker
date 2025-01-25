@@ -21,7 +21,7 @@ class SecurityFacade(
                 email = email,
                 password =  passwordEncoder.encode(password),
                 enabled = true,
-                authorities = roles.map { SimpleGrantedAuthority(it) }.toList(),
+                authorities = roles,
                 notBlocked = true,
             ))
 

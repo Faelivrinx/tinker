@@ -2,6 +2,7 @@ package com.dominikdev.tinker.security
 
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 @Entity
@@ -27,11 +28,18 @@ data class IdentityUserEntity(
     private val notBlocked: Boolean,
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private val authorities: Collection<GrantedAuthority>
+    @CollectionTable(
+        name = "identity_authorities", // Custom table name
+        joinColumns = [JoinColumn(name = "identity_id")] // Foreign key column
+    )
+    @Column(name = "authority") // Column name for elements in the collection
+    private val authorities: Collection<String> = listOf()
 
-) : UserDetails {
+) :  UserDetails {
 
-    override fun getAuthorities(): Collection<GrantedAuthority> = authorities
+    protected constructor() : this(0, "", "", false,"", false, listOf())
+
+    override fun getAuthorities(): Collection<GrantedAuthority> = authorities.map { SimpleGrantedAuthority(it) }
     override fun getPassword(): String = password
     override fun getUsername(): String = username
 

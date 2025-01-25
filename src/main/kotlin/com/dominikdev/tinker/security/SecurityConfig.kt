@@ -9,6 +9,8 @@ import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.oauth2.jwt.JwtDecoder
@@ -19,14 +21,15 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.provisioning.JdbcUserDetailsManager
 import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
+import javax.sql.DataSource
 
 
 @Configuration
 class SecurityConfig {
 
     @Bean
-    fun userDetailsManager() : UserDetailsManager {
-        return JdbcUserDetailsManager()
+    fun userDetailsManager(userIdentityRepository: UserIdentityRepository) : UserDetailsManager {
+        return UserIdentityService(userIdentityRepository)
     }
 
     @Bean
@@ -40,10 +43,13 @@ class SecurityConfig {
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth -> auth
                 .requestMatchers("/public/**").permitAll()
-                .requestMatchers("/h2-console   /**").permitAll()
+                .requestMatchers("/favicon.ico").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/api/register/**").permitAll()
                 .requestMatchers("/token").permitAll()
                 .anyRequest().authenticated()
             }
+            .headers { headers -> headers.frameOptions { it.sameOrigin() } }
             .oauth2ResourceServer { it.jwt(Customizer.withDefaults())}
             .build()
     }
@@ -59,4 +65,5 @@ class SecurityConfig {
 
     @Bean
     fun passwordEncoder() : PasswordEncoder = BCryptPasswordEncoder()
+
 }

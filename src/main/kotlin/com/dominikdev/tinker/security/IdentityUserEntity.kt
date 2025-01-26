@@ -19,13 +19,13 @@ data class IdentityUserEntity(
     private val password: String,
 
     @Column(nullable = false)
-    private val enabled: Boolean,
+    private var enabled: Boolean,
 
     @Column(unique = true, nullable = false)
     val email: String, // Custom field
 
     @Column(nullable = false)
-    private val notBlocked: Boolean,
+    private var notBlocked: Boolean,
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
@@ -38,6 +38,10 @@ data class IdentityUserEntity(
 ) :  UserDetails {
 
     protected constructor() : this(0, "", "", false,"", false, listOf())
+
+    fun enableAccount() {
+        this.enabled = true
+    }
 
     override fun getAuthorities(): Collection<GrantedAuthority> = authorities.map { SimpleGrantedAuthority(it) }
     override fun getPassword(): String = password

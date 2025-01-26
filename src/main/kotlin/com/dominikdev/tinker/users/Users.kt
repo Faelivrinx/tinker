@@ -11,7 +11,8 @@ data class Expert(
 
     @Column(name = "identity_email", nullable = false)
     val identityEmail: String
-)
+) {
+}
 
 @Entity
 @Table(name = "clients")

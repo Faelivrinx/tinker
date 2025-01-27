@@ -1,7 +1,6 @@
 package com.dominikdev.tinker.security
 
 import com.dominikdev.tinker.shared.OperationResult
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 

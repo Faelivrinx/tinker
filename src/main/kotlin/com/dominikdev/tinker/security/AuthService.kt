@@ -1,22 +1,23 @@
 package com.dominikdev.tinker.security
 
+import org.slf4j.LoggerFactory
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.provisioning.UserDetailsManager
 import org.springframework.stereotype.Service
 
 @Service
 class AuthService(
     private val tokenService: TokenService,
-    private val userDetailsManager: UserDetailsManager,
+    private val userDetailsService: UserDetailsService,
     private val passwordEncoder: PasswordEncoder
 ) {
-    private val log = org.slf4j.LoggerFactory.getLogger(AuthService::class.java)
+    private val log = LoggerFactory.getLogger(AuthService::class.java)
 
     fun authenticateWithToken(tokenRequest: TokenRequestDto): TokenResponseDto {
         val userDetails = try {
-            userDetailsManager.loadUserByUsername(tokenRequest.email)
+            userDetailsService.loadUserByUsername(tokenRequest.email)
         } catch (e: UsernameNotFoundException) {
             log.error("User not found: {}", tokenRequest.email)
             throw RuntimeException("Invalid credentials") // Generic error for security

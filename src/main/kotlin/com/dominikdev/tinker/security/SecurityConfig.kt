@@ -28,7 +28,7 @@ import javax.sql.DataSource
 class SecurityConfig {
 
     @Bean
-    fun userDetailsManager(userIdentityRepository: UserIdentityRepository) : UserDetailsManager {
+    fun userDetailsService(userIdentityRepository: UserIdentityRepository) : UserDetailsService {
         return UserIdentityService(userIdentityRepository)
     }
 

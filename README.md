@@ -16,5 +16,3 @@ Run the app using gradle:
 ```
 
 ## TODO
-
-- [x] model a database schema
